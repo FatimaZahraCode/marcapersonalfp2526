@@ -33,19 +33,27 @@ class FamiliasProfesionalesController extends Controller
             ->with('familia_profesional', $familia_profesional);
     }
 
-    public function postCreate(Request $request)
+    public function store(Request $request)
     {
+         $familiaProfesional =  new FamiliaProfesional();
+        $familiaProfesional ->codigo =$request->input('codigo');
+        $familiaProfesional ->nombre =$request->input('nombre');
         $familiaProfesional = FamiliaProfesional::create($request->all());
         return redirect()->action([self::class, 'getShow'], ['id' => $familiaProfesional->id]);
     }
 
 
 
-    public function putCreate(Request $request, $id)
+    public function update(Request $request, $id)
     {
         $familiaProfesional = FamiliaProfesional::findOrFail($id);
-
-        $familiaProfesional->update($request->all());
+        $familiaProfesional ->codigo =$request->input('codigo');
+        $familiaProfesional ->nombre =$request->input('nombre');
+        if($request->hasFile('imagen')){
+        $path = $request->file('imagen')->store('imagenes', ['disk' => 'public']);
+        $familiaProfesional->imagen = $path;
+        }
+        $familiaProfesional->save();
         return redirect()->action([self::class, 'getShow'], ['id' => $familiaProfesional->id]);
     }
 
