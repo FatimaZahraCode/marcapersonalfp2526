@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\API\CicloController;
+use App\Http\Controllers\API\FamiliaProfesionalController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Psr\Http\Message\ServerRequestInterface;
@@ -9,9 +11,24 @@ use Tqdev\PhpCrudApi\Config\Config;
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
+// RUTAS /api/v1
+Route::prefix('v1')->group(function () {
+    Route::apiResource('ciclos', CicloController::class);
+    Route::apiResource('familias_profesionales', FamiliaProfesionalController::class)->parameters([
+        'familias_profesionales' => 'familiaProfesional']);
 
+    /*Route::apiResource('familias_profesionales', FamiliaProfesionalController::class)
+    ->parameters([
+        'familias_profesionales' => 'familiaProfesional'
+    ]);
 
+    Route::apiResource('familias_profesionales.ciclos', CicloController::class)
+    ->parameters([
+        'familias_profesionales' => 'familiaProfesional'
+    ]);*/
+});
 
+//rutas PHP-CRUD-API
 Route::any('/{any}', function (ServerRequestInterface $request) {
     $config = new Config([
         'address' => env('DB_HOST', '127.0.0.1'),
