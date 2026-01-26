@@ -45,4 +45,7 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function curriculo(){
+        return $this->hasOne(Curriculo::class);
+    }
 }
