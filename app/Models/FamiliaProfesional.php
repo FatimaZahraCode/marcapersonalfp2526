@@ -27,4 +27,5 @@ class FamiliaProfesional extends Model
     {
         return $this->hasMany(Ciclo::class, 'familia_id');
     }
+
 }
